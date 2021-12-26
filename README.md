@@ -19,13 +19,13 @@ For this application, I used:
 * Inquirer package
 
 ## Installation
-To install the necessary packages, run the folllowing command in the terminal while inside the Main folder: 
+To install the necessary packages, run the folllowing command in the terminal: 
 ```md
 npm i
 ```
 
 ## Usage
-After installing the necessary packages, run the following command in the terminal to run the application:
+After installing the necessary packages, run the following command in the terminal while inside the Main folder to run the application:
 ```md
 node employee_db.js
 ```
