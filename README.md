@@ -19,7 +19,7 @@ For this application, I used:
 * Inquirer package
 
 ## Installation
-To install the necessary packages, run the folllowing command in the terminal: 
+To install the necessary packages, run the folllowing command in the terminal while inside the Main folder: 
 ```md
 npm i
 ```
