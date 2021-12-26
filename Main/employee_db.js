@@ -110,6 +110,7 @@ function showDepartments() {
   });
 };
 
+
 function showRoles() {
   console.log('Showing all roles...\n');
   const sql = `SELECT role.id AS ID, title, department_name AS department, salary  
@@ -123,6 +124,7 @@ function showRoles() {
     promptUser();
   });
 };
+
 
 function showEmployees() {
   console.log('Showing all employees...\n');
@@ -141,6 +143,7 @@ function showEmployees() {
   });
 };
 
+
 function addDepartment() {
   inquirer.prompt([
     {
@@ -154,12 +157,13 @@ function addDepartment() {
                   VALUES (?)`;
     
     db.query(sql, answer.addDept, (err,result) => {
-      if(err) throw(err);
+      if(err) throw err;
       console.log(`Added ${answer.addDept} to departments`);
       showDepartments();
     }) ;         
   });
 };
+
 
 function addRole() {
   inquirer.prompt([
@@ -180,7 +184,7 @@ function addRole() {
     const roleSql = `SELECT department_name, id FROM department`;
 
     db.query(roleSql, (err,data) => {
-      if (err) throw (err);
+      if (err) throw err;
 
       const dept = data.map(({department_name, id}) => ({department_name: department_name, value: id}));
 
@@ -200,11 +204,82 @@ function addRole() {
                        VALUES(?,?,?)`;
                        
           db.query(sql, params, (err,result) => {
-            if(err) throw(err);
+            if(err) throw err;
             console.log(`Added ${answer.role} to roles.`);
             showRoles();
           });
         });
+    });
+  });
+};
+
+
+function addEmployee() {
+  inquirer.prompt([
+    {
+      type:'input',
+      name:'firstName',
+      message:"What is the employee's first name?"
+    },
+    {
+      type:'input',
+      name:'lastName',
+      message:"What is the employee's last name?"
+    }
+  ])
+  .then(answer => {
+    const params = [answer.firstName, answer.lastName]
+
+    const roleSql = `SELECT role.id, role.title FROM role`;
+
+    db.query(roleSql, (err,data) => {
+      if(err) throw err;
+
+      const roles = data.map(({id,title}) => ({name:title, value:id}));
+      
+      inquirer.prompt([
+        {
+          type:'list',
+          name:'role',
+          message:"What is the employee's role?",
+          choices: roles
+        }
+      ])
+      .then(roleChoice => {
+        const role = roleChoice.role;
+        params.push(role);
+
+        const managerSql = `SELECT * FROM employee`;
+
+        db.query(managerSql, (err,data) => {
+          if (err) throw err;
+
+          const managers = data.map(({id, first_name, last_name})=>({name: `${first_name} ${last_name}`, value:id}));
+
+          inquirer.prompt([
+            {
+              type:'list',
+              name:'manager',
+              message:"Who is the employee's manager?",
+              choices: managers
+            }
+          ])
+          .then(managerChoice => {
+            const manager = managerChoice.manager;
+            params.push(manager);
+            
+            const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+                         VALUES (?,?,?,?)`;
+
+            db.query(sql, params, (err,result) => {
+              if(err) throw err;
+              console.log("Employee has been added.")
+
+              showEmployees();
+            });
+          });
+        });
+      });
     });
   });
 };
