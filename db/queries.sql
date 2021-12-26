@@ -17,3 +17,7 @@ ON employee.role_id = role.id
 JOIN department
 ON role.department_id = department.id
 LEFT JOIN employee manager ON employee.manager_id = manager.id;
+
+-- Add a new department
+INSERT INTO department (department_name)
+VALUES (?)`
