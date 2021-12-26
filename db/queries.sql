@@ -25,4 +25,8 @@ VALUES (?);
 -- Add a new role
 INSERT INTO role (title, salary, department_id)
 VALUES(?,?,?);
+
+-- Add a new employee
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES (?,?,?,?)
  
