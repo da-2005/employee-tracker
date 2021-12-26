@@ -5,7 +5,7 @@ I created an employee database using mySQL that holds information on a company's
 
 
 ## Table of Contents
-* [Technologies](#User-Story)
+* [Technologies](#Technologies)
 * [Installation](#Installation)
 * [Usage](#Usage)
 * [Demo](#Demo)
